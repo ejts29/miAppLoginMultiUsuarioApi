@@ -2,6 +2,7 @@
  * src/services/api.ts
  * Servicio API para interactuar con el backend Hono.
  */
+// Jeremy S: Revisión de servicios API y verificación de endpoints. Aporte: Jeremy Sanhueza.
 
 import { NewTaskData, Task } from "../types/todolist";
 
