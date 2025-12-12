@@ -1,4 +1,7 @@
 // app/home/todo-list/index.tsx
+import { useAuth } from "@/src/context/AuthContext";
+import { api } from "@/src/services/api";
+import { Task } from "@/src/types/todolist";
 import { FontAwesome } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
@@ -12,9 +15,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useAuth } from "../../../src/context/AuthContext";
-import { api } from "../../../src/services/api"; // Ruta relativa 
-import { Task } from "../../../src/types/todolist";
 // Pantalla principal de la lista de tareas
 
 // Lista de tareas 
@@ -173,6 +173,15 @@ export default function TodoListScreen() {
                 name={item.completed ? "check-square" : "square-o"}
                 size={28}
                 color={item.completed ? "green" : "gray"}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => router.push(`./todo-list/edit/${item.id}` as any)}>
+              <FontAwesome
+                name="pencil"
+                size={28}
+                color="#3b82f6"
+                style={{ marginLeft: 20 }}
               />
             </TouchableOpacity>
 

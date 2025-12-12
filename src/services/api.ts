@@ -165,15 +165,39 @@ export const api = {
   /**
    * Actualiza el estado de una tarea
    */
-  async updateTodo(id: string, token: string, completed: boolean): Promise<Task> {
+  async updateTodo(id: string, token: string, data: { completed?: boolean; title?: string; image?: string | null; location?: any } | boolean): Promise<Task> {
     try {
+        let payload: any = {};
+        
+        // Soporte legacy para cuando 'data' era solo 'completed' (boolean)
+        if (typeof data === 'boolean') {
+            payload = { completed: data };
+        } else {
+            // Nuevo soporte para objeto completo
+            // Solo agregamos propiedades si están definidas
+            if (data.title !== undefined) payload.title = data.title;
+            if (data.completed !== undefined) payload.completed = data.completed;
+            
+            // Imagen: Si es string, enviamos. Si es explícitamente null/empty, el backend podría borrarla (depende de implementación),
+            // pero por seguridad solo enviamos si hay string válido o null.
+            if (data.image !== undefined) payload.image = data.image;
+
+            // Location: igual que createTodo
+            if (data.location) {
+                payload.location = {
+                    latitude: data.location.latitude,
+                    longitude: data.location.longitude
+                };
+            }
+        }
+
         const res = await fetch(`${API_URL}/todos/${id}`, {
           method: "PATCH",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ completed }),
+          body: JSON.stringify(payload),
         });
         return await this.handleResponse(res);
     } catch (error: any) {

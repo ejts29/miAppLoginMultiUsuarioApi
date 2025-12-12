@@ -5,22 +5,22 @@ import * as Location from "expo-location";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
-  Alert,
-  Button,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
+    ActivityIndicator,
+    Alert,
+    Button,
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
 } from "react-native";
 // Tipos de datos
 
 //  relacionados con la ubicación
+import { useAuth } from "@/src/context/AuthContext";
+import { api } from "@/src/services/api";
 import { LocationData } from "@/src/types/todolist";
-import { useAuth } from "../../../src/context/AuthContext";
-import { api } from "../../../src/services/api";
 
 // Pantalla para crear una nueva tarea
 export default function CreateTodoScreen() {

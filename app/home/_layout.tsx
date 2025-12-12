@@ -64,6 +64,11 @@ export default function HomeTabs() {
         name="todo-list/index"
         options={{ href: null }}
       />
+      
+      <Tabs.Screen
+        name="todo-list/edit/[id]"
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }
