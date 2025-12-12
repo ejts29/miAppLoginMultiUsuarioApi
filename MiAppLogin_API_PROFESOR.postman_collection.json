@@ -1,0 +1,110 @@
+{
+  "info": {
+    "_postman_id": "c9b7c3ac-5281-4e2b-9f68-f4976f790abc",
+    "name": "MiAppLogin - API PROFESOR (basic-hono-api)",
+    "description": "Colección Postman oficial para probar la API del profesor usada en EVA 3.\n\nIMPORTANTE:\n- Todos los usuarios tienen password \"password123\".\n- Las rutas /todos requieren token.\n- El worker se cae si envías imágenes grandes.\n- La API se reinicia constantemente.\n\nEmail usado: grupo@gmail.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "https://basic-hono-api.borisbelmarm.workers.dev" },
+    { "key": "email", "value": "grupo@gmail.com" },
+    { "key": "password", "value": "password123" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "AUTH",
+      "item": [
+        {
+          "name": "Register (password=123)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Login (obtiene token)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let data = pm.response.json();",
+                  "if (data.token) {",
+                  "    pm.environment.set('token', data.token);",
+                  "    console.log('Token guardado:', data.token);",
+                  "} else {",
+                  "    console.log('No se recibió token');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TODOS (requiere token)",
+      "item": [
+        {
+          "name": "Get All Todos",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/todos", "host": ["{{base_url}}"], "path": ["todos"] }
+          }
+        },
+        {
+          "name": "Create Todo (sin imagen)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Mi tarea desde Postman" },
+                { "key": "location", "value": "{\"lat\": -33.45, \"lng\": -70.66}" }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/todos", "host": ["{{base_url}}"], "path": ["todos"] }
+          }
+        },
+        {
+          "name": "Update Todo (id=1 example)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{ \"completed\": true }" },
+            "url": { "raw": "{{base_url}}/todos/1", "host": ["{{base_url}}"], "path": ["todos", "1"] }
+          }
+        },
+        {
+          "name": "Delete Todo (id=1 example)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/todos/1", "host": ["{{base_url}}"], "path": ["todos", "1"] }
+          }
+        }
+      ]
+    }
+  ]
+}
