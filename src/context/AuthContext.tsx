@@ -36,6 +36,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Daniel Castro: Verificación del flujo de autenticación. Se busca evitar problemas de
+  // sincronización entre navegación y estado de sesión.
   // Cargar token y user al inicio
   useEffect(() => {
     const loadToken = async () => {
