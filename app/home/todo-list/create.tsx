@@ -5,15 +5,15 @@ import * as Location from "expo-location";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    Button,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  ActivityIndicator,
+  Alert,
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 // Tipos de datos
 
@@ -35,14 +35,14 @@ export default function CreateTodoScreen() {
   // Solicitar permisos al montar el componente
   useEffect(() => {
     (async () => {
-      // 📸 Permisos cámara
+      //  Permisos cámara
       await ImagePicker.requestCameraPermissionsAsync();
-      // 📍 Permisos ubicación
+      //  Permisos ubicación
       await Location.requestForegroundPermissionsAsync();
     })();
   }, []);
 
-  // 📸 Tomar foto
+  //  Tomar foto
   const handlePickImage = async () => {
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
@@ -55,7 +55,7 @@ export default function CreateTodoScreen() {
     }
   };
 
-  // 📍 Obtener ubicación
+  //  Obtener ubicación
   const handleGetLocation = async () => {
     setIsLoading(true);
     try {
